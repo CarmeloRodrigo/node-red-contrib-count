@@ -1,0 +1,124 @@
+[
+    {
+        "id": "b3483ba09d3ed8bd",
+        "type": "subflow",
+        "name": "Contador",
+        "info": "",
+        "category": "function",
+        "in": [
+            {
+                "x": 320,
+                "y": 180,
+                "wires": [
+                    {
+                        "id": "626f11d626c6324b"
+                    }
+                ]
+            }
+        ],
+        "out": [
+            {
+                "x": 760,
+                "y": 340,
+                "wires": [
+                    {
+                        "id": "626f11d626c6324b",
+                        "port": 0
+                    }
+                ]
+            }
+        ],
+        "env": [
+            {
+                "name": "valor",
+                "type": "num",
+                "value": ""
+            },
+            {
+                "name": "Reset",
+                "type": "bool",
+                "value": "true"
+            },
+            {
+                "name": "Nombre",
+                "type": "str",
+                "value": ""
+            },
+            {
+                "name": "modo",
+                "type": "str",
+                "value": ""
+            }
+        ],
+        "meta": {
+            "module": "node-red-contrib-count",
+            "type": "contador",
+            "version": "0.0.1",
+            "author": "Crodrigo",
+            "desc": "CONTADOR",
+            "keywords": "contador, node-red",
+            "license": "Apache-2.0"
+        },
+        "color": "#E7E7AE",
+        "inputLabels": [
+            "Configuracion"
+        ],
+        "icon": "node-red/serial.svg",
+        "status": {
+            "x": 760,
+            "y": 160,
+            "wires": [
+                {
+                    "id": "88550707688803ab",
+                    "port": 0
+                }
+            ]
+        }
+    },
+    {
+        "id": "626f11d626c6324b",
+        "type": "function",
+        "z": "b3483ba09d3ed8bd",
+        "name": "Contador",
+        "func": "let nombre=env.get(\"Nombre\") || \"C1\";\nlet val=env.get(\"valor\") || msg.valor;\nlet reset=env.get(\"reset\")|| msg.reset\nvar local=context.get('data') || {};\n\n\nif (local.count===undefined){\n    local.count=0;\n}\n\nif (msg.reset==\"true\" || local.count>=msg.preset){    \n    local.count=0\n    node.status({fill:\"red\",shape:\"dot\",text:\"Reset\"});\n}else{\n    if(msg.reset=== false){\n        if(msg.modo==\"inc\"){\n            local.count += val;\n            node.status({fill:\"red\",shape:\"dot\",text:\"Sumado\"});    \n        }else if(msg.modo==\"dec\") {\n            local.count -= val;\n            node.status({fill:\"red\",shape:\"dot\",text:\"Restando\"});    \n        }    \n    }\n}\n\n\n\n\n\n\n\n\nmsg.topic= nombre\n\nmsg.payload={totalizador:local.count};\ncontext.set('data',local);\n\nreturn msg;",
+        "outputs": 1,
+        "timeout": "",
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [
+            {
+                "var": "contador",
+                "module": "contador"
+            }
+        ],
+        "x": 570,
+        "y": 220,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "88550707688803ab",
+        "type": "status",
+        "z": "b3483ba09d3ed8bd",
+        "name": "",
+        "scope": null,
+        "x": 570,
+        "y": 180,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "3ae8502ec318f9fb",
+        "type": "subflow:b3483ba09d3ed8bd",
+        "z": "8477f1e99cfd40de",
+        "name": "",
+        "x": 440,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    }
+]
